@@ -3,3 +3,9 @@
 [33m[nodemon] watching: *.*[39m
 [32m[nodemon] starting `node index.js`[39m
 Listening on port 3000 ...
+events.js:183
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: read EIO
+    at TTY.onread (net.js:622:25)
