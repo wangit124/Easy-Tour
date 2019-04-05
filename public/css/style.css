@@ -1,0 +1,163 @@
+body {
+    overflow-x: hidden;
+}
+
+h3 {
+    margin-top: 15%;
+    text-align: center;
+}
+
+.modal-body {
+    height: 100%;
+}
+#image-info{
+    width:40%;
+}
+.offset{
+    height:140px;
+}
+#menuChart {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+}
+
+#loaderLayer {
+    position: absolute;
+    top: -30%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+    display: block;
+    filter: drop-shadow( 1px 1px 2px black);
+    z-index: 1;
+}
+
+#loaderLayer2 {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+    display: block;
+    filter: drop-shadow( 1px 1px 2px black);
+    z-index: 1;
+}
+
+#quote-wrapper {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+    text-align: center;
+    padding: 25px;
+}
+
+#start-menu {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+    text-align: center;
+}
+
+p {
+    text-align: center;
+    float: center;
+}
+
+.center-text {
+    position: absolute;
+    position: fixed;
+    top: 55%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+}
+
+#overlay {
+    z-index: 9999999;
+    position: absolute;
+}
+
+.LA-loop {
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.8;
+}
+
+.LA-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#loading {
+    font-size: 80px;
+    position: relative;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#search-box {
+    position: relative;
+    width: 90%;
+    margin: 2% auto;
+}
+
+#search-form {
+    height: 40px;
+    border: 1px solid #999;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+#search-text {
+    font-size: 14px;
+    color: #ddd;
+    border-width: 0;
+    background: transparent;
+}
+
+#search-box input[type="text"] {
+    width: 90%;
+    padding: 8px 0 11px 1em;
+    color: #333;
+    outline: none;
+}
+
+#search-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 40px;
+    width: 80px;
+    font-size: 14px;
+    color: black;
+    text-align: center;
+    line-height: 42px;
+    border-width: 0;
+    background-color: #03c4c9;
+    -webkit-border-radius: 0px 5px 5px 0px;
+    -moz-border-radius: 0px 5px 5px 0px;
+    border-radius: 0px 5px 5px 0px;
+    cursor: pointer;
+}
+
+#image-container {
+    margin-top:170px;
+}

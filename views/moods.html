@@ -1,0 +1,113 @@
+<!--MOOD SELECTOR>-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <title>Moods</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href='/css/style.css' rel='stylesheet' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TimelineMax.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+
+</head>
+
+<body>
+    <div class="LA-container">
+        <video loop muted autoplay class="LA-loop">
+            <source src="/videos/LAScape.webm" type="video/webm">
+            <source src="/videos/LAScape.mov" type="video/mov">
+            <source src="/videos/LAScape.ogv" type="video/ogg">
+        </video>
+    </div>
+    <div id="center-multiple">
+        <canvas id="menuChart"></canvas>
+    </div>
+    <script>
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
+    <script>
+        alert("Please be patient during training.");
+        setTimeout(function () {
+            $.getJSON("/photoMooder/customModel.json", function (data) {
+                window.Red = data['Red'];
+                window.Yellow = data['Yellow'];
+                window.Green = data['Green'];
+                window.Cyan = data['Cyan'];
+                window.Blue = data['Blue'];
+                window.Magenta = data['Magenta'];
+                window.Black = data['Black'];
+                window.White = data['White'];
+                var ctx = document.getElementById('menuChart').getContext('2d');
+                var pieChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        datasets: [{
+                            data: [10, 10, 10, 10, 10, 10, 10, 10, 10],
+                            backgroundColor: [
+                                'rgba(255, 0, 0, 0.7)',
+                                'rgba(255, 255, 0, 0.7)',
+                                'rgba(0, 255, 0, 0.7)',
+                                'rgba(0, 255, 255, 0.7)',
+                                'rgba(0, 0, 255, 0.7)',
+                                'rgba(255, 0, 255, 0.7)',
+                                'rgba(0, 0, 0, 0.7)',
+                                'rgba(255, 255, 255, 0.7)',
+                                'rgba(100, 100, 100, 0.7)',
+                            ],
+                            borderWidth: 0
+                        }],
+                        labels: [window.Red,
+                        window.Yellow,
+                        window.Green,
+                        window.Cyan,
+                        window.Blue,
+                        window.Magenta,
+                        window.Black,
+                        window.White,
+                            'Custom'
+                        ],
+                    },
+                    options: {
+                        legend: {
+                            display: false
+                        },
+                        onHover:
+                            (evt, item) => {
+                                $('#menuChart').show();
+                                $('body').css("background-color", item[0]['_model'].backgroundColor);
+                            },
+
+                        onClick:
+                            (evt, item) => {
+
+                                var mydata = { mood: item[0]['_model'].label };
+                                $.post("/interact", mydata, function (data) {
+                                    alert(data);
+                                });
+                                if (item[0]['_model'].label == 'Custom') {
+                                    window.location.replace("/search");
+                                }
+                                else {
+                                    // load moods page
+                                    window.location.replace("/interact");
+                                }
+
+                            }
+
+                    }
+                });
+                alert("Trained! Select a mood for your next trip!");
+            });
+        }, 8000);
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      position: absolute;
+      top: 15%;
+      left: 5%;
+      height: 80%;
+      margin: auto;
+      width: 90%;
+    }
+  </style>
+  <title>Easy Tour</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <link href='/css/style.css' rel='stylesheet' />
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
+
+  <!--GET JSON PARAMETERS-->
+  <script>
+    $.getJSON("../photoMooder/customModel.json", function (data) {
+      function getRandomInt(max) {
+        return Math.floor(Math.random() * Math.floor(max));
+      }
+      window.centerLat = parseFloat(data['Lat']);
+      window.centerLng = parseFloat(data['Lng']);
+      window.centerCity = data['City'];
+      window.numDest = parseInt(data['Numdest']);
+
+      $.getJSON("/JSON/destinations.json", function (data) {
+        var check = JSON.stringify(data);
+        if (check == "[]") {
+          alert(message = "Based on your selections, no matching trips were found");
+          window.location.replace("/moods/loaded");
+        }
+        var maxSize = 0;
+        if (data.length <= window.numDest) {
+          maxSize = data.length;
+        }
+        else {
+          maxSize = window.numDest;
+        }
+
+        // Get maxSize number of random destinations
+        window.destinations = [];
+        for (var i = 0; i < maxSize; i++) {
+          var randomInd = getRandomInt(maxSize);
+          window.destinations.push(data[randomInd]);
+        }
+
+        // Get list of coordinates
+        window.geoJSON = [];
+        for (var i = 0; i < window.destinations.length; i++) {
+          var latLng = [];
+          var currDest = window.destinations[i];
+          latLng.push(currDest['longitude']);
+          latLng.push(currDest['latitude']);
+          window.geoJSON.push(latLng);
+        }
+
+        setTimeout(function () {
+          renderMap();
+        }, 1000);
+      });
+    });
+  </script>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top" id="topnav">
+    <div class="container">
+      <div class="d-flex flex-grow-1">
+        <span class="w-100 d-lg-none d-block">
+          <!-- hidden spacer to center brand on mobile --></span>
+        <a class="navbar-brand display-4 text-white" href="/navigate">
+          <img src="/images/EasyTour.png" height="40"></img>
+        </a>
+        <div class="w-100 text-right">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainbar">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </div>
+      <div class="collapse navbar-collapse flex-grow-1 text-right" id="mainbar">
+        <ul class="navbar-nav ml-auto flex-nowrap">
+          <li class="nav-item">
+            <a href="/" class="nav-link">Train</a>
+          </li>
+          <li class="nav-item">
+            <a href="/navigate" class="nav-link">Navigate</a>
+          </li>
+          <li class="nav-item">
+            <a href="/search" class="nav-link">Search</a>
+          </li>
+          <!-- <li class="nav-item dropdown">
+            <a href="#about-us" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown">About Us</a>
+            <div class="dropdown-menu bg-light" id="our-action">
+              <a href="#our-vision" class="nav-link">Our Vision</a>
+              <a href="#research" class="nav-link">Research</a>
+              <a href="#contacts" class="nav-link">Contacts</a>
+            </div>
+          </li>-->
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div id='map'></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <script>
+    function renderMap() {
+      var coordinatesArr = window.geoJSON;
+      mapboxgl.accessToken = 'pk.eyJ1IjoiaG93YXJkb3ciLCJhIjoiY2p0dGNrdDk3MWE3bDQzbzR6M3ZuZTdsdCJ9.5cRHWydUp1I-w2piGEY0xQ';
+      var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [window.destinations[0]['longitude'], window.destinations[0]['latitude']],
+        pitch: 60, // pitch in degrees
+        bearing: -40, // bearing in degrees
+        zoom: 15
+      });
+      alert("Calculating your trip...");
+      function getWords(str) {
+        return str.split(' ').slice(0, 4).join(" ");
+      }
+      // Create and add image pop ups for each location
+      for (var ind = 0; ind < window.geoJSON.length; ind++) {
+        // create the popup
+        var popup = new mapboxgl.Popup({ offset: 25 })
+          .setHTML("Destination " + ind + ": " + getWords(window.destinations[ind]['name']) + '<br>' + '<img src="' + window.destinations[ind]['link'] + '" height="auto" width="auto">'
+          );
+
+        new mapboxgl.Marker()
+          .setLngLat(window.geoJSON[ind])
+          .setPopup(popup) // sets a popup on this marker
+          .addTo(map);
+      }
+      map.on('load', function () {
+        map.addLayer({
+          "id": "route",
+          "type": "line",
+          "source": {
+            "type": "geojson",
+            "data": {
+              "type": "Feature",
+              "properties": {},
+              "geometry": {
+                "type": "LineString",
+                "coordinates": coordinatesArr
+              }
+            }
+          },
+          "layout": {
+            "line-join": "round",
+            "line-cap": "round"
+          },
+          "paint": {
+            "line-color": "#000",
+            "line-width": 2.5
+          }
+        });
+      });
+      alert("Congrats! Your trip has been mapped!");
+      alert("Hover over each icon to display information about the location!");
+    }
+  </script>
+</body>
+
+</html>
