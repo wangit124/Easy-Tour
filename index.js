@@ -72,45 +72,45 @@ var flickr = new Flickr("d4447493b0b0ff88b7a52f0ea3444951");
 
 /* enable body parser*/
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('../public'));
+app.use(express.static('./public'));
 
 /* serve title page*/
 app.get('/', (req, res) => {
-    res.sendFile("easyTour.html", { root: path.join(__dirname, "../views") });
+    res.sendFile("easyTour.html", { root: path.join(__dirname, "./views") });
 });
 
 /* Post to url for training model*/
 app.post('/trained', function (req, res) {
     var callData = JSON.stringify(req.body);
-    fs.writeFile('../public/photoMooder/customModel.json', callData, 'utf8', function (success) {
+    fs.writeFile('./public/photoMooder/customModel.json', callData, 'utf8', function (success) {
         console.log("Successfully Trained.");
     });
 });
 app.get('/loading', (req, res) => {
-    res.sendFile("loading.html", { root: path.join(__dirname, "../views") });
+    res.sendFile("loading.html", { root: path.join(__dirname, "./views") });
 });
 
 app.get('/search', (req, res) => {
-    res.sendFile("search.html", { root: path.join(__dirname, "../views") });
+    res.sendFile("search.html", { root: path.join(__dirname, "./views") });
 });
 
 app.get('/navigate', (req, res) => {
-    res.sendFile("navigate.html", { root: path.join(__dirname, "../views") });
+    res.sendFile("navigate.html", { root: path.join(__dirname, "./views") });
 });
 
 // Interact with map route
 app.get('/interact', (req, res) => {
-    res.sendFile("loading2.html", { root: path.join(__dirname, "../views") });
+    res.sendFile("loading2.html", { root: path.join(__dirname, "./views") });
 });
 
 // Store query and search lists
 app.post('/interact', (req, res) => {
     // Get query
     var query = req.body['mood'];
-    var modelData = fs.readFileSync('../public/photoMooder/customModel.json');
+    var modelData = fs.readFileSync('./public/photoMooder/customModel.json');
 
     // Empty destination file
-    fs.writeFileSync('../public/JSON/destinations.json', "[]");
+    fs.writeFileSync('./public/JSON/destinations.json', "[]");
 
     // Get callback data
     var cityName = JSON.parse(modelData)['City'];
@@ -120,7 +120,7 @@ app.post('/interact', (req, res) => {
     const flickrAPI = "d4447493b0b0ff88b7a52f0ea3444951";
 
     // For each photo that matches the query, get its geolocation
-    var imageData = JSON.parse(fs.readFileSync('../public/JSON/image-tags.json'));
+    var imageData = JSON.parse(fs.readFileSync('./public/JSON/image-tags.json'));
     for (var i = 0; i < imageData.length; i++) {
         var getDestinations = new Promise(function (resolve, reject) {
             var currInd = i;
@@ -166,13 +166,13 @@ app.post('/interact', (req, res) => {
             }
         });
         getDestinations.then(function (send) {
-            var destFile = fs.readFileSync('../public/JSON/destinations.json');
+            var destFile = fs.readFileSync('./public/JSON/destinations.json');
             if (!destFile) {
                 destFile = "[]";
             }
             var json = JSON.parse(destFile);
             json.push(send);
-            fs.writeFileSync('../public/JSON/destinations.json', JSON.stringify(json));
+            fs.writeFileSync('./public/JSON/destinations.json', JSON.stringify(json));
         });
     }
     console.log("Destinations Queried!");
@@ -186,16 +186,16 @@ app.post('/interact', (req, res) => {
 // If already loaded photos, simply search file
 app.get('/moods/loaded', (req, res) => {
     // Render mood selection page
-    res.sendFile("moods.html", { root: path.join(__dirname, "../views") });
+    res.sendFile("moods.html", { root: path.join(__dirname, "./views") });
 });
 
 // Get moods page
 app.get('/moods', (req, res) => {
     // Read JSON file to get city name and search flickr database for matching groups
-    var modelData = fs.readFileSync('../public/photoMooder/customModel.json');
+    var modelData = fs.readFileSync('./public/photoMooder/customModel.json');
 
     // Empty image-tag file
-    fs.writeFileSync('../public/JSON/image-tags.json', "[]");
+    fs.writeFileSync('./public/JSON/image-tags.json', "[]");
 
     // Get all the info from custom model
     var cityName = JSON.parse(modelData)['City'];
@@ -341,13 +341,13 @@ app.get('/moods', (req, res) => {
                         photoJSON[myURL[0]]['imageMoods'] = colorEmotion;
 
                         // Write object to file!
-                        var imageFile = fs.readFileSync('../public/JSON/image-tags.json');
+                        var imageFile = fs.readFileSync('./public/JSON/image-tags.json');
                         if (!imageFile) {
                             imageFile = "[]";
                         }
                         var json = JSON.parse(imageFile);
                         json.push(photoJSON[myURL[0]]);
-                        fs.writeFileSync('../public/JSON/image-tags.json', JSON.stringify(json));
+                        fs.writeFileSync('./public/JSON/image-tags.json', JSON.stringify(json));
                     })();
                 });
             }
@@ -356,12 +356,12 @@ app.get('/moods', (req, res) => {
     });
 
     // Render mood selection page
-    res.sendFile("moods.html", { root: path.join(__dirname, "../views") });
+    res.sendFile("moods.html", { root: path.join(__dirname, "./views") });
 });
 
 // Listen on open port or 3000 if not open
-const port = process.env.PORT || 3000;
+/*const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
     console.log(`Listening on port ${port} ...`);
-});
+});*/
