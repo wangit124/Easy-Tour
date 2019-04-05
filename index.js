@@ -360,8 +360,8 @@ app.get('/moods', (req, res) => {
 });
 
 // Listen on open port or 3000 if not open
-/*const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
     console.log(`Listening on port ${port} ...`);
-});*/
+});
