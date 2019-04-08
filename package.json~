@@ -28,6 +28,6 @@
     "request": "^2.88.0"
   },
   "scripts": {
-    "start" : "node index.js"
+    "start" : "nodemon controllers/index.js"
   }
 }
