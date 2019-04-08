@@ -1,14 +1,1 @@
-{
-    "City": "Los Angeles",
-    "Lat": "34.05223",
-    "Lng": "-118.24368",
-    "Numdest": "6-stops",
-    "Red": "Energetic",
-    "Yellow": "Exhilarating",
-    "Green": "Pleasant",
-    "Cyan": "Leisurely",
-    "Blue": "Calm",
-    "Magenta": "Brooding",
-    "White": "Thoughtful",
-    "Black": "Melancholy"
-}
+{"City":"Los Angeles","Lat":"34.05223","Lng":"-118.24368","Numdest":"4-stops","Red":"Energetic","Yellow":"Exhilarating","Green":"Pleasant","Cyan":"Leisurely","Blue":"Calm","Magenta":"Brooding","White":"Thoughtful","Black":"Melancholy"}
