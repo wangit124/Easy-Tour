@@ -1,1 +1,1 @@
-web: node controllers/index.js
+web: node index.js
