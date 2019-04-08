@@ -28,6 +28,7 @@
     "request": "^2.88.0"
   },
   "scripts": {
-    "start" : "nodemon controllers/index.js"
+    "start" : "nodemon controllers/index.js",
+    "export" : "export GOOGLE_APPLICATION_CREDENTIAL=./gvision/iTour-1f69dac1b68e.json"
   }
 }
