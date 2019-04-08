@@ -1,1 +1,1 @@
-web: nodemon controllers/index.js
+web: node controllers/index.js
