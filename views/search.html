@@ -14,6 +14,59 @@
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
 </head>
+<script>
+
+  $(document).ready(function () {
+    var searchResults = sessionStorage.getItem("results");
+    $.getJSON("/JSON/image-tags.json", function (data) {
+      if (searchResults == "none") {
+        var append = '<h3>No results found.</h3>';
+        $(append).appendTo("#queryBox");
+        return;
+      }
+      if (searchResults == "all") {
+        searchResults = new Array(data.length);
+        for (var index = 0; index < data.length; index++) {
+          searchResults[index] = index;
+        }
+      }
+
+      for (var resultInd = 0; resultInd < searchResults.length; resultInd++) {
+        var currInd = searchResults[resultInd];
+        var imageURL = data[currInd]['imageLink'];
+
+        var append = '<div class="col-md-6">' +
+          '<a data-target="#modalIMG' + currInd + '" data-toggle="modal" href="#" class="color-gray-darker td-hover-none">' +
+          ' <div class="ba-0 tp-s">' +
+          ' <img alt="Card image cap" class="card-img-top" src="' + imageURL + '"' +
+          ' <div class="card-body">' +
+          ' <h4 class="card-title color-gray-darker"></h4>' +
+          ' <p class="card-text color-gray-darker">' +
+          '</p>' + '</div> </div> </a> </div>';
+
+        $(append).appendTo("#queryBox");
+
+        var emotions = data[currInd]['imageMoods'];
+
+        var imageInfo = "Moods: " + JSON.stringify(emotions[0] + ", " + emotions[1]);
+
+        var modalAppend = '<div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="modalIMG' + currInd + '" role="dialog" tabindex="-1">' +
+          '<div class="modal-dialog modal-lg" role="document">' +
+          '<div class="modal-content">' +
+          '<div class="modal-body mb-0 p-0">' +
+          '<img id="modal-image" src="' + imageURL + '" alt="" style="width:100%"> </div>' +
+          '<div class="modal-footer">' +
+          '<div id="image-info">' + imageInfo + '</div> ' +
+          '<div><a href="' + imageURL + '" id="modal-download" target="_blank">Download</a></div>' +
+          '<button class="btn btn-outline-primary btn-rounded btn-md ml-4 text-center" data-dismiss="modal" type="button">Close</button>' +
+          '</div></div></div></div>';
+
+        $(modalAppend).appendTo("#modal-wrap");
+
+      }
+    });
+  });
+</script>
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top" id="topnav">
@@ -54,7 +107,7 @@
     </div>
 
     <div id='search-box'>
-      <form id='search-form' target='_top'>
+      <form id='search-form'>
         <input id='search-text' name='q' placeholder='Enter a keyword' type='text' />
         <button id='search-button' type='submit'><span>Search</span></button>
       </form>
@@ -67,21 +120,7 @@
     </div>
   </div>
 
-  <div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="modalIMG" role="dialog" tabindex="-1">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-body mb-0 p-0">
-          <img id="modal-image" src="" alt="" style="width:100%">
-        </div>
-        <div class="modal-footer">
-          <div id="image-info"></div>
-          <div><a href="" id="modal-download" target="_blank">Download</a></div>
-          <button class="btn btn-outline-primary btn-rounded btn-md ml-4 text-center" data-dismiss="modal"
-            type="button">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div id="modal-wrap"></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
     integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -89,102 +128,75 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
-
   <script>
+
     $(document).ready(function () {
-      $.getJSON("/JSON/image-tags.json", function (data) {
-        for (var index = 0; index < data.length; index++) {
-          var imageURL = data[index]['imageLink'];
 
-          var append = '<div class="col-md-6">' +
-            '<a data-target="#modalIMG" data-toggle="modal" href="#" class="color-gray-darker td-hover-none">' +
-            ' <div class="ba-0 tp-s">' +
-            ' <img alt="Card image cap" class="card-img-top" src="' + imageURL + '"' +
-            ' <div class="card-body">' +
-            ' <h4 class="card-title color-gray-darker"></h4>' +
-            ' <p class="card-text color-gray-darker">' +
-            '</p>' + '</div> </div> </a> </div>';
-          $(append).appendTo("#queryBox");
-        }
-        $(".col-md-6").click(function () {
-          var currURL = $(this).find('.card-img-top').attr('src');
-          var emotions = 0;
-          for (var index = 0; index < data.length; index++) {
-            if (data[index]['imageLink'] == currURL) {
-              emotions = data[index]['imageMoods'];
-            }
-          }
-          $('#image-info').html("Moods: " + JSON.stringify(emotions[0] + ", " + emotions[1]));
-          $('#modal-image').attr('src', currURL);
-          $('#modal-download').attr('href', currURL);
-
-        })
-      });
-
-    });
-
-  </script>
-  <script>
-    $('body').on('keyup keypress', function (e) {
-      var query = $('#search-text').val();
-      var keyCode = e.keyCode || e.which;
-      if (keyCode === 13) {
-        checkQuery(query);
-      }
-    });
-
-    $('#search-button').click(function () {
-      var query = $('#search-text').val();
-      checkQuery(query);
-    });
-
-    function checkQuery(search) {
-      $.getJSON("/JSON/image-tags.json", function (data) {
-        var valid = [];
-        var moreSearch = search.split(" ");
-        for (var i = 0; i < data.length; i++) {
-          for (var l = 0; l < moreSearch.length; l++) {
-            var currSearch = moreSearch[l].toLowerCase();
-
-            var tags = data[i]['imageTags'];
-            var moods = data[i]['imageMoods'];
-            for (var j = 0; j < tags.length; j++) {
-              var currTag = tags[j].toLowerCase();
-              if (currTag.includes(currSearch)) {
-                valid.push(i);
-                break;
-              }
-            }
-            for (var h = 0; h < moods.length; h++) {
-              var currMood = moods[h].toLowerCase();
-              if (currMood.includes(currSearch)) {
-                valid.push(i);
-                break;
-              }
-            }
-          }
-        }
-        //filter out duplicates
-        var moreValid = [];
-        $.each(valid, function (i, el) {
-          if ($.inArray(el, moreValid) === -1) moreValid.push(el);
-        });
-
-        if (moreValid.length == 0) {
-          alert("No results found for '" + search + "'");
+      $('body').on('keyup keypress', function (e) {
+        var query = $('#search-text').val();
+        var keyCode = e.keyCode || e.which;
+        if (keyCode === 13) {
+          checkQuery(query);
           return false;
         }
-        // Add objects
-        for (var k = 0; k < moreValid.length; k++) {
-          var index = moreValid[k];
-          $("#queryBox").children().each(function (i) {
-            if (i != index) {
-              $(this).hide();
-            }
-          });
-        }
       });
-    }
+
+      $('#search-button').click(function () {
+        var query = $('#search-text').val();
+        checkQuery(query);
+        return;
+      });
+
+      function checkQuery(search) {
+        $.getJSON("/JSON/image-tags.json", function (data) {
+          // if no search is specified, return true
+          if (search == "") {
+            sessionStorage.setItem("results", "all");
+            return;
+          }
+
+          // Else check if search contains keywords
+          var valid = [];
+          var moreSearch = search.split(" ");
+          for (var i = 0; i < data.length; i++) {
+            for (var l = 0; l < moreSearch.length; l++) {
+              var currSearch = moreSearch[l].toLowerCase();
+
+              var tags = data[i]['imageTags'];
+              var moods = data[i]['imageMoods'];
+              for (var j = 0; j < tags.length; j++) {
+                var currTag = tags[j].toLowerCase();
+                if (currTag.includes(currSearch)) {
+                  valid.push(i);
+                  break;
+                }
+              }
+              for (var h = 0; h < moods.length; h++) {
+                var currMood = moods[h].toLowerCase();
+                if (currMood.includes(currSearch)) {
+                  valid.push(i);
+                  break;
+                }
+              }
+            }
+          }
+
+          //filter out duplicates
+          var moreValid = [];
+          $.each(valid, function (i, el) {
+            if ($.inArray(el, moreValid) === -1) moreValid.push(el);
+          });
+
+          if (moreValid.length == 0) {
+            alert("No results found for '" + search + "'");
+            sessionStorage.setItem("results", "none");
+            return;
+          }
+
+          sessionStorage.setItem("results", moreValid);
+        });
+      }
+    });
   </script>
 </body>
 

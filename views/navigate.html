@@ -148,9 +148,10 @@
       }
       // Create and add image pop ups for each location
       for (var ind = 0; ind < window.geoJSON.length; ind++) {
+        var destNum = ind + 1;
         // create the popup
         var popup = new mapboxgl.Popup({ offset: 25 })
-          .setHTML("Destination " + ind + ": " + getWords(window.destinations[ind]['name']) + '<br>' + '<img src="' + window.destinations[ind]['link'] + '" height="auto" width="auto">'
+          .setHTML("Destination " + destNum + " -> " + getWords(window.destinations[ind]['name']) + '<br>' + '<img src="' + window.destinations[ind]['link'] + '" height="auto" width="auto">'
           );
 
         new mapboxgl.Marker()
