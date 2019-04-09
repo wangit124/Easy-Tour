@@ -58,10 +58,18 @@
           maxSize = window.numDest;
         }
 
+        alert(maxSize + " destinations found!");
+
         // Get maxSize number of random destinations
         window.destinations = [];
+        var previous = -1;
+
         for (var i = 0; i < maxSize; i++) {
-          var randomInd = getRandomInt(maxSize);
+          randomInd = getRandomInt(maxSize);
+          while (randomInd == previous) {
+            randomInd = getRandomInt(maxSize);
+          }
+          previous = randomInd;
           window.destinations.push(data[randomInd]);
         }
 
@@ -103,6 +111,9 @@
         <ul class="navbar-nav ml-auto flex-nowrap">
           <li class="nav-item">
             <a href="/" class="nav-link">Train</a>
+          </li>
+          <li class="nav-item">
+            <a href="/moods/loaded" class="nav-link">Moods</a>
           </li>
           <li class="nav-item">
             <a href="/navigate" class="nav-link">Navigate</a>
@@ -185,7 +196,7 @@
         });
       });
       alert("Congrats! Your trip has been mapped!");
-      alert("Hover over each icon to display information about the location!");
+      alert("Click each icon to display information about the location!");
     }
   </script>
 </body>

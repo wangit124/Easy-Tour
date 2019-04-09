@@ -24,7 +24,7 @@
         $(append).appendTo("#queryBox");
         return;
       }
-      if (searchResults == "all") {
+      if (searchResults == "all" || !searchResults) {
         searchResults = new Array(data.length);
         for (var index = 0; index < data.length; index++) {
           searchResults[index] = index;
@@ -36,7 +36,7 @@
         var imageURL = data[currInd]['imageLink'];
 
         var append = '<div class="col-md-6">' +
-          '<a data-target="#modalIMG' + currInd + '" data-toggle="modal" href="#" class="color-gray-darker td-hover-none">' +
+          '<a data-target="#modalIMG' + resultInd + '" data-toggle="modal" href="#" class="color-gray-darker td-hover-none">' +
           ' <div class="ba-0 tp-s">' +
           ' <img alt="Card image cap" class="card-img-top" src="' + imageURL + '"' +
           ' <div class="card-body">' +
@@ -50,7 +50,7 @@
 
         var imageInfo = "Moods: " + JSON.stringify(emotions[0] + ", " + emotions[1]);
 
-        var modalAppend = '<div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="modalIMG' + currInd + '" role="dialog" tabindex="-1">' +
+        var modalAppend = '<div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="modalIMG' + resultInd + '" role="dialog" tabindex="-1">' +
           '<div class="modal-dialog modal-lg" role="document">' +
           '<div class="modal-content">' +
           '<div class="modal-body mb-0 p-0">' +
@@ -87,6 +87,9 @@
         <ul class="navbar-nav ml-auto flex-nowrap">
           <li class="nav-item">
             <a href="/" class="nav-link">Train</a>
+          </li>
+          <li class="nav-item">
+            <a href="/moods/loaded" class="nav-link">Moods</a>
           </li>
           <li class="nav-item">
             <a href="/navigate" class="nav-link">Navigate</a>
@@ -161,7 +164,6 @@
           for (var i = 0; i < data.length; i++) {
             for (var l = 0; l < moreSearch.length; l++) {
               var currSearch = moreSearch[l].toLowerCase();
-
               var tags = data[i]['imageTags'];
               var moods = data[i]['imageMoods'];
               for (var j = 0; j < tags.length; j++) {
