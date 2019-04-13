@@ -5,13 +5,19 @@ reality*/
 
 // Define ML function using cloud vision to determine nearest color
 async function quickstart(URL) {
+
+    var destination= './public/images/' + URL.split('_')[1];
     const vision = require('@google-cloud/vision');
     // Creates a client
-    const client = new vision.ImageAnnotatorClient();
+    const client = new vision.ImageAnnotatorClient({
+        projectId: 'itour-236011',
+        keyFilename: './gvision/iTour-3460e8f5a831.json',
+    });
 
     // Performs label detection on the image file
     // Performs property detection on the gcs file
-    const [result] = await client.imageProperties(URL);
+    const [result] = await client.imageProperties(destination);
+
     const colors = result.imagePropertiesAnnotation.dominantColors.colors;
 
     // Define typical colors to match
@@ -67,6 +73,7 @@ const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const download = require('image-downloader')
 var Flickr = require('flickr-sdk');
 var flickr = new Flickr("d4447493b0b0ff88b7a52f0ea3444951");
 
@@ -306,8 +313,28 @@ app.get('/moods', (req, res) => {
                     }
                     return photoURL;
                 }).then(function (myURL) {
+
+                    // First remove all jpg files
+                    var findRemoveSync = require('find-remove');
+                    findRemoveSync('./public/images', {extensions: ['.jpg']});
+
+                    var destination= './public/images/' + myURL[1].split('_')[1];
+
+                    const options = {
+                        url: myURL[1],
+                        dest: destination
+                    }
+                
+                    download.image(options)
+                        .then(({ filename, image }) => {
+                        })
+                        .catch((err) => {
+                        });
+
+                    const timeout = ms => new Promise(res => setTimeout(res, ms));
                     // Call async getColors function
                     (async function getColors() {
+                        await timeout(10000);
                         var colorArr = await quickstart(myURL[1]).catch(console.error);
                         var colorEmotion = [];
                         for (var h = 0; h < colorArr.length; h++) {

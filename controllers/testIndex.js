@@ -50,19 +50,37 @@ Request.post({
     console.log("RESPONSE:  "+ response);
 });
 */
+/*
+const fs = require('fs');
+const download = require('image-downloader');
+var findRemoveSync = require('find-remove');
 // Define ML function using cloud vision to determine nearest color
-/*async function quickstart(URL) {
+async function quickstart(URL) {
+  // Download to a directory and save with the original filename
 
-    const vision = require('@google-cloud/vision');
-    // Creates a client
-    const client = new vision.ImageAnnotatorClient();
 
+    var path = 
+    const [result] = await client.imageProperties(path);
+    console.log(result);
+    var path = '../public/images/'+URL;
     // Performs label detection on the image file
     // Performs property detection on the gcs file
-    const [result] = await client.imageProperties(URL);
+    const [result] = await client.imageProperties(path);
     const colors = result.imagePropertiesAnnotation.dominantColors.colors;
-    
-    var colorPalette = {
+    try {
+      return colors;
+    }
+    catch (e) {
+      console.log(e);
+    }
+    const vision = require('@google-cloud/vision');
+    // Creates a client
+    const client = new vision.ImageAnnotatorClient({
+      projectId: 'itour-236011',
+      keyFilename: '../gvision/iTour-3460e8f5a831.json',
+    });
+}*/
+   /* var colorPalette = {
         red: '#ff0000',
         yellow: '#ffff00',
         green: '#00ff00',
@@ -104,7 +122,7 @@ Request.post({
     }
 }
 (async function main(){
-var global = await quickstart('http://tineye.com/images/widgets/mona.jpg').catch(console.error);
+var global = await quickstart('https://farm8.staticflickr.com/7912/46764589474_62d491e3a1.jpg').catch(console.error);
 console.log(global);
 })();
 /*
