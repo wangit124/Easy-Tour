@@ -5,6 +5,24 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="57x57" href="/easytourfavicon.ico/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/easytourfavicon.ico/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/easytourfavicon.ico/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/easytourfavicon.ico/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/easytourfavicon.ico/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/easytourfavicon.ico/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/easytourfavicon.ico/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/easytourfavicon.ico/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/easytourfavicon.ico/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/easytourfavicon.ico/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/easytourfavicon.ico/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/easytourfavicon.ico/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/easytourfavicon.ico/favicon-16x16.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/easytourfavicon.ico/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
   <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
   <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
   <style>
@@ -46,9 +64,6 @@
 
       $.getJSON("/JSON/destinations.json", function (data) {
         var check = JSON.stringify(data);
-        if (check == "[]") {
-          alert(message = "Based on your selections, no matching trips were found");
-        }
         var maxSize = 0;
         if (data.length <= window.numDest) {
           maxSize = data.length;
@@ -57,7 +72,20 @@
           maxSize = window.numDest;
         }
 
-        alert(maxSize + " destinations found!");
+
+        if (maxSize !== 0) {
+          alert(maxSize + ` destination${maxSize !== 1 ? 's' : ''} found! Click on map icons to view details!`);
+        }
+        else {
+          alert('No destinations found. Please select a different mood!');
+          setTimeout(() => {
+            // load moods page
+            setTimeout(function () {
+              window.location.replace("/moods/loaded");
+            }, 1500);
+          })
+          return;
+        }
 
         // Get maxSize number of random destinations
         window.destinations = [];
@@ -90,7 +118,7 @@
   </script>
 </head>
 
-<body>
+<body id="white-background">
 
   <nav class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top" id="topnav">
     <div class="container">
@@ -132,8 +160,12 @@
       </div>
     </div>
   </nav>
-
+  <div class="shadow p-3 mb-5 bg-white rounded custom-alert">
+    <p class='custom-message'></p>
+    <button id='confirm-button' type='submit'>OK</button>
+  </div>
   <div id='map'></div>
+  <script src="/js/customAlert.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
     integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
     crossorigin="anonymous"></script>
@@ -152,7 +184,6 @@
         bearing: -40, // bearing in degrees
         zoom: 15
       });
-      alert("Calculating your trip...");
       function getWords(str) {
         return str.split(' ').slice(0, 4).join(" ");
       }
@@ -194,8 +225,6 @@
           }
         });
       });
-      alert("Congrats! Your trip has been mapped!");
-      alert("Click each icon to display information about the location!");
     }
   </script>
 </body>

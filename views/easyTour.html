@@ -7,6 +7,26 @@
     <meta charset='utf-8' />
     <title>Easy Tour</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/easytourfavicon.ico/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/easytourfavicon.ico/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/easytourfavicon.ico/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/easytourfavicon.ico/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/easytourfavicon.ico/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/easytourfavicon.ico/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/easytourfavicon.ico/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/easytourfavicon.ico/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/easytourfavicon.ico/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/easytourfavicon.ico/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/easytourfavicon.ico/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/easytourfavicon.ico/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/easytourfavicon.ico/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/easytourfavicon.ico/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
     <!-- Bootstrap core CSS -->
@@ -24,13 +44,6 @@
 </head>
 
 <body>
-    <div class="LA-container">
-        <video loop muted autoplay class="LA-loop">
-            <source src="/videos/LAScape.webm" type="video/webm">
-            <source src="/videos/LAScape.mov" type="video/mov">
-            <source src="/videos/LAScape.ogv" type="video/ogg">
-        </video>
-    </div>
     <div class="center-text">
         <svg version="1.1" id="loaderLayer" viewBox="0.0 0.0 456.16272965879267 183.27034120734908" fill="none"
             stroke="none" stroke-linecap="square" stroke-miterlimit="10" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -84,7 +97,7 @@
 
         <div id="quote-wrapper">
             <b>
-                Use artificial intelligence to make your trip a memorable one
+                Let artificial intelligence make your trip a memorable one
             </b>
         </div>
 
@@ -98,12 +111,12 @@
     </div>
     <!-- The Modal -->
     <div class="modal fade" id="trainModal">
-        <div class="modal-dialog modal-xl">
+        <div class="modal-dialog modal-m">
             <div class="modal-content">
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title">Location and Color-based Moods</h4>
+                    <h4 class="modal-title">What kind of trip are you looking for?</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
@@ -277,7 +290,11 @@
         });
 
     </script>
-
+    <script src="/js/customAlert.js"></script>
+    <div class="shadow p-3 mb-5 bg-white rounded custom-alert">
+        <p class='custom-message'></p>
+        <button id='confirm-button' type='submit'>OK</button>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
