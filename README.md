@@ -1,7 +1,8 @@
 # Easy-Tour
-LA Hacks 2019 Submission **[LAUNCH HERE](https://easy-tour-2019.herokuapp.com/)**
 
-[Devpost Submission](https://devpost.com/software/easy-tour)
+### LA Hacks 2019 Submission [LAUNCH HERE](https://easy-tour-2019.herokuapp.com/)**
+
+### [Devpost Submission](https://devpost.com/software/easy-tour)
 
 ![alt text](https://github.com/hwanggit/Easy-Tour/blob/master/Screenshots/Screen%20Shot%202019-03-31%20at%2010.14.22%20AM.png)
 
