@@ -1,6 +1,6 @@
 # Easy-Tour
 
-### LA Hacks 2019 Submission [LAUNCH HERE](https://easy-tour-2019.herokuapp.com/)
+### LA Hacks 2019 Submission
 
 ### [Devpost Submission](https://devpost.com/software/easy-tour)
 
